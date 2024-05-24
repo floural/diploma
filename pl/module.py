@@ -12,31 +12,6 @@ from transformers import AutoModel
 from config import Config
 
 
-class StanceMetrics:
-    def __init__(self):
-        self.prefix = "stance"
-        self.accuracy = torchmetrics.Accuracy(num_classes=Config.num_cls_stan, task="binary", average="macro")
-        self.precision = torchmetrics.Precision(num_classes=Config.num_cls_stan, average='macro', zero_division=0,
-                                                task="binary")
-        self.recall = torchmetrics.Recall(num_classes=Config.num_cls_stan, average='macro', zero_division=0,
-                                          task="binary")
-        self.f1 = torchmetrics.F1Score(num_classes=Config.num_cls_stan, average='macro', zero_division=0, task="binary")
-        self.kappa = torchmetrics.CohenKappa(num_classes=Config.num_cls_stan, task="binary")
-
-
-class SentimentMetrics:
-    def __init__(self):
-        self.prefix = "sentiment"
-        self.accuracy = torchmetrics.Accuracy(num_classes=Config.num_cls_stan, task="multiclass", average="macro")
-        self.precision = torchmetrics.Precision(num_classes=Config.num_cls_stan, average='macro', zero_division=0,
-                                                task="multiclass")
-        self.recall = torchmetrics.Recall(num_classes=Config.num_cls_stan, average='macro', zero_division=0,
-                                          task="multiclass")
-        self.f1 = torchmetrics.F1Score(num_classes=Config.num_cls_stan, average='macro', zero_division=0,
-                                       task="multiclass")
-        self.kappa = torchmetrics.CohenKappa(num_classes=Config.num_cls_stan, task="multiclass")
-
-
 class TweetLM(pl.LightningModule):
     def __init__(self, pad_token_id=None):
         super().__init__()
@@ -49,7 +24,7 @@ class TweetLM(pl.LightningModule):
 
         l_config = LoraConfig(
             r=4,
-            lora_alpha=8,
+            lora_alpha=4,
             lora_dropout=0.1,
             use_dora=True,
             use_rslora=True,
