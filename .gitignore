@@ -1,0 +1,5 @@
+
+*.0
+/pl/__pycache__
+/lightning_logs
+/logs
