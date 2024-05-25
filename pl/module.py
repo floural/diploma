@@ -59,7 +59,7 @@ class TweetLM(pl.LightningModule):
         self.sentiment_kappa = torchmetrics.CohenKappa(num_classes=Config.num_cls_sent, task="multiclass")
 
     def compute_loss(self, stance_logits, sentiment_logits, labels, sentiment_mask, stance_mask):
-        weights = self.val_dataloaders[0].dataset.senti_data.class_weights
+        weights = self.trainer.val_dataloaders[0].dataset.senti_data.class_weights
         criterion_stance = torch.nn.CrossEntropyLoss()
         criterion_sentiment = torch.nn.CrossEntropyLoss(weight=weights)
 
