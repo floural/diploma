@@ -102,7 +102,7 @@ class DefaultCollator:
         sentiment_mask = [1 if feature["task_type"] == TaskType.SENTIMENT else 0 for feature in features]
         stance_mask = [1 if feature["task_type"] == TaskType.STANCE else 0 for feature in features]
 
-        inputs = self.tokenizer(topics, texts, questions, padding="max_length", truncation=True, max_length=512, return_tensors="pt")
+        inputs = self.tokenizer(topics, texts, questions, padding="max_length", truncation=True, max_length=Config.max_length, return_tensors="pt")
         inputs["labels"] = torch.tensor(labels, dtype=torch.long)
         inputs["sentiment_mask"] = torch.tensor(sentiment_mask, dtype=torch.bool)
         inputs["stance_mask"] = torch.tensor(stance_mask, dtype=torch.bool)
