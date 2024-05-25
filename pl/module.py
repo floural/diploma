@@ -58,20 +58,21 @@ class TweetLM(pl.LightningModule):
                                                  task="multiclass")
         self.sentiment_kappa = torchmetrics.CohenKappa(num_classes=Config.num_cls_sent, task="multiclass")
 
-    @staticmethod
-    def compute_loss(stance_logits, sentiment_logits, labels, sentiment_mask, stance_mask):
-        criterion = torch.nn.CrossEntropyLoss()
+    def compute_loss(self, stance_logits, sentiment_logits, labels, sentiment_mask, stance_mask):
+        weights = self.val_dataloader().dataset.senti_data.class_weights
+        criterion_stance = torch.nn.CrossEntropyLoss()
+        criterion_sentiment = torch.nn.CrossEntropyLoss(weight=weights)
 
         stance_labels = labels[stance_mask.bool()]
         sentiment_labels = labels[sentiment_mask.bool()]
 
         stance_loss = 0
         if len(stance_labels) > 0:
-            stance_loss = criterion(stance_logits, stance_labels)
+            stance_loss = criterion_stance(stance_logits, stance_labels)
 
         sentiment_loss = 0
         if len(sentiment_labels) > 0:
-            sentiment_loss = criterion(sentiment_logits, sentiment_labels)
+            sentiment_loss = criterion_sentiment(sentiment_logits, sentiment_labels)
 
         total_loss = stance_loss + sentiment_loss
         stance_loss = stance_loss.item() if isinstance(stance_loss, torch.Tensor) else stance_loss
@@ -124,9 +125,9 @@ class TweetLM(pl.LightningModule):
                                                          stance_mask)
 
         losses = {
-            "train/total_loss": loss,
-            "train/stance_loss": stance_loss,
-            "train/sentiment_loss": sent_loss
+            "train_total_loss": loss,
+            "train_stance_loss": stance_loss,
+            "train_sentiment_loss": sent_loss
         }
         self.log_dict(losses, on_step=True, on_epoch=True)
         return loss
@@ -168,9 +169,9 @@ class TweetLM(pl.LightningModule):
             }
 
         losses = {
-            "val/total_loss": loss,
-            "val/stance_loss": stance_loss,
-            "val/sentiment_loss": sent_loss,
+            "val_total_loss": loss,
+            "val_stance_loss": stance_loss,
+            "val_sentiment_loss": sent_loss,
         }
         self.log_dict(losses, on_step=True, on_epoch=True)
 

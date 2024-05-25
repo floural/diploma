@@ -18,6 +18,9 @@ class SentimentDataset(Dataset):
     def __init__(self, file_path) -> None:
         super().__init__()
         self.data = pd.read_json(file_path, lines=True)
+        class_counts = self.data.gold_label.value_counts().loc[sorted(self.data.gold_label.unique())].values
+        total = class_counts.sum()
+        self.class_weights = torch.tensor([total / count for count in class_counts], dtype=torch.float32)
 
     def __len__(self) -> int:
         return len(self.data)
