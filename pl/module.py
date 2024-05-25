@@ -147,6 +147,9 @@ class TweetLM(pl.LightningModule):
         stance_labels = labels[stance_mask]
         sentiment_labels = labels[sentiment_mask]
 
+        print(stance_labels)
+        print(sentiment_labels)
+
         stance_metrics = {}
         sentiment_metrics = {}
         if len(stance_labels) > 0:

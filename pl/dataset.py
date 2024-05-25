@@ -17,7 +17,7 @@ class TaskType(Enum):
 class SentimentDataset(Dataset):
     def __init__(self, file_path) -> None:
         super().__init__()
-        self.data = pd.read_json(file_path, lines=True).iloc[:2]
+        self.data = pd.read_json(file_path, lines=True)
 
     def __len__(self) -> int:
         return len(self.data)
@@ -36,7 +36,7 @@ class SentimentDataset(Dataset):
 class StanceDataset(Dataset):
     def __init__(self, data_path) -> None:
         super().__init__()
-        self.data = pd.read_csv(data_path).iloc[:2]
+        self.data = pd.read_csv(data_path)
 
     def __len__(self) -> int:
         return len(self.data)

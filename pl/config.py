@@ -1,7 +1,7 @@
 class Config:
     name_or_path = "stabilityai/stablelm-zephyr-3b"
 
-    num_cls_sent = 4
+    num_cls_sent = 5
     num_cls_stan = 2
 
     batch_size = 32
