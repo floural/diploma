@@ -124,9 +124,9 @@ class TweetLM(pl.LightningModule):
                                                          stance_mask)
 
         losses = {
-            "total_loss": loss,
-            "stance_loss": stance_loss,
-            "sentiment_loss": sent_loss
+            "train/total_loss": loss,
+            "train/stance_loss": stance_loss,
+            "train/sentiment_loss": sent_loss
         }
         self.log_dict(losses, on_step=True, on_epoch=True)
         return loss
@@ -151,26 +151,26 @@ class TweetLM(pl.LightningModule):
         sentiment_metrics = {}
         if len(stance_labels) > 0:
             stance_metrics = {
-                "stance_accuracy": self.stance_acc(stance_preds, stance_labels),
-                "stance_precision": self.stance_precision(stance_preds, stance_labels),
-                "stance_recall": self.stance_recall(stance_preds, stance_labels),
-                "stance_f1": self.stance_f1(stance_preds, stance_labels),
-                "stance_kappa": self.stance_kappa(stance_preds, stance_labels),
+                "val/stance_accuracy": self.stance_acc(stance_preds, stance_labels),
+                "val/stance_precision": self.stance_precision(stance_preds, stance_labels),
+                "val/stance_recall": self.stance_recall(stance_preds, stance_labels),
+                "val/stance_f1": self.stance_f1(stance_preds, stance_labels),
+                "val/stance_kappa": self.stance_kappa(stance_preds, stance_labels),
             }
         if len(sentiment_labels) > 0:
             sentiment_metrics = {
-                "sentiment_accuracy": self.sentiment_acc(sentiment_preds, sentiment_labels),
-                "sentiment_precision": self.sentiment_precision(sentiment_preds, sentiment_labels),
-                "sentiment_recall": self.sentiment_recall(sentiment_preds, sentiment_labels),
-                "sentiment_f1": self.sentiment_f1(sentiment_preds, sentiment_labels),
-                "sentiment_kappa": self.sentiment_kappa(sentiment_preds, sentiment_labels),
+                "val/sentiment_accuracy": self.sentiment_acc(sentiment_preds, sentiment_labels),
+                "val/sentiment_precision": self.sentiment_precision(sentiment_preds, sentiment_labels),
+                "val/sentiment_recall": self.sentiment_recall(sentiment_preds, sentiment_labels),
+                "val/sentiment_f1": self.sentiment_f1(sentiment_preds, sentiment_labels),
+                "val/sentiment_kappa": self.sentiment_kappa(sentiment_preds, sentiment_labels),
 
             }
 
         losses = {
-            "total_loss": loss,
-            "stance_loss": stance_loss,
-            "sentiment_loss": sent_loss,
+            "val/total_loss": loss,
+            "val/stance_loss": stance_loss,
+            "val/sentiment_loss": sent_loss,
         }
         self.log_dict(losses, on_step=True, on_epoch=True)
 
