@@ -24,5 +24,6 @@ trainer = Trainer(
     precision="16-mixed",
     max_epochs=Config.num_epochs,
     logger=tb_logger,
+    accumulate_grad_batches=4,
 )
 trainer.fit(model, [train_loader], [val_loader])
