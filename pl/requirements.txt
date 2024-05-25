@@ -5,3 +5,5 @@ pytorch-lightning
 torchmetrics
 pandas
 numpy
+accelerate
+tensorboard

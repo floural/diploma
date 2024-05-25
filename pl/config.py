@@ -8,6 +8,8 @@ class Config:
     num_epochs = 30
     lr = 5e-5
 
+    max_length = 512
+
     sentiment_train_data_path = "data/sentiment/new_train.jsonl"
     sentiment_val_data_path = "data/sentiment/validation.jsonl"
 

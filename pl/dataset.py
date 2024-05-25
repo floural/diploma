@@ -15,9 +15,10 @@ class TaskType(Enum):
 
 
 class SentimentDataset(Dataset):
-    def __init__(self, file_path) -> None:
+    def __init__(self, file_path, tokenizer) -> None:
         super().__init__()
         self.data = pd.read_json(file_path, lines=True)
+        self.tokenizer = tokenizer
 
     def __len__(self) -> int:
         return len(self.data)
@@ -34,9 +35,10 @@ class SentimentDataset(Dataset):
 
 
 class StanceDataset(Dataset):
-    def __init__(self, data_path) -> None:
+    def __init__(self, data_path, tokenizer) -> None:
         super().__init__()
         self.data = pd.read_csv(data_path)
+        self.tokenizer = tokenizer
 
     def __len__(self) -> int:
         return len(self.data)
@@ -102,7 +104,7 @@ class DefaultCollator:
         sentiment_mask = [1 if feature["task_type"] == TaskType.SENTIMENT else 0 for feature in features]
         stance_mask = [1 if feature["task_type"] == TaskType.STANCE else 0 for feature in features]
 
-        inputs = self.tokenizer(topics, texts, questions, padding=True, truncation=True, return_tensors="pt")
+        inputs = self.tokenizer(topics, texts, questions, padding="max_length", truncation=True, max_length=512, return_tensors="pt")
         inputs["labels"] = torch.tensor(labels, dtype=torch.long)
         inputs["sentiment_mask"] = torch.tensor(sentiment_mask, dtype=torch.bool)
         inputs["stance_mask"] = torch.tensor(stance_mask, dtype=torch.bool)
